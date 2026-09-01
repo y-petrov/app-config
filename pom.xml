@@ -1,23 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>y-petrov</groupId>
-  <artifactId>app-config</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <properties>
-    <maven.compiler.target>22</maven.compiler.target>
-    <maven.compiler.source>22</maven.compiler.source>
-  </properties>
-  
-  <dependencies>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.1</version>
-      <scope>test</scope>
-    </dependency>
-   </dependencies>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>y-petrov</groupId>
 	<artifactId>app-config</artifactId>
@@ -52,10 +35,8 @@
 				<configuration>
 					<argLine>
 						<!-- Needed for OS environment and JVM properties
-						simulation-->
-						--add-opens java.base/java.lang=ALL-UNNAMED
-						--add-opens java.base/java.util=ALL-UNNAMED
-					</argLine>
+						simulation--> --add-opens java.base/java.lang=ALL-UNNAMED
+						--add-opens java.base/java.util=ALL-UNNAMED </argLine>
 					<!-- Need two lines below to run each test class in its own
 					JVM to isolate enums in tests-->
 					<forkCount>1</forkCount>
