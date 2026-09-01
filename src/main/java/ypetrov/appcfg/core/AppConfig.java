@@ -56,8 +56,8 @@ public class AppConfig<T extends Enum<T> & ICfgExtra> {
         m.invoke(paramsEnumClass);
       }
     } else {
-      String msg = String.format("The repetitive init attempt is taken for the params enum %s.",
-          paramsEnumClass.getCanonicalName());
+      String msg = String.format("The repetitive init attempt is taken. Provided params enum lass is [%s].",
+          paramsEnumClass != null ? paramsEnumClass.getCanonicalName() : "null");
       logger.log(Level.SEVERE, msg);
       throw new IllegalStateException(msg);
     }
