@@ -1,2 +1,11 @@
+# maven
 /bin/
 /target/
+
+# Eclispe dots
+.classpath
+.project
+.settings
+
+# IntelliJ Idea
+.idea
