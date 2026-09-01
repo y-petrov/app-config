@@ -120,20 +120,33 @@ public class MyAppMain {
 }
 ```
 
+### 2.3 Access config parameters in the application code
+
+Nothing is simpler. Just get value of the `myapp.config.MyAppCfg` enumeration member that you need:
+
+```java
+  ...
+  String vendorApiUrl = MyAppCfg.VENDOR_API_URL.value();
+  ...
+```
+
+That's it.
+
+### 2.4 Notes
 Now a few comments.
 
-#### 2.2.1 Houston, we have a problem!
+#### 2.4.1 Houston, we have a problem!
 
 After `AppConfig.initConfig()` completes its work it would be a good idea to check all members of config `enum` - what if some member has `null` in its `value`? It's quite possible if neither of used sources has value for some key. How to react on this is up to app designer - abort starting, disable functionality that relies on this config parameter, call 911, whatever else...
 
-#### 2.2.2 Order matters
+#### 2.4.2 Order matters
 
 Ordered collection of sources - the later source object (whose class implements interface `ICfgSource`) is added to the collection, then the later its `loadCfg()` method will be called. It means that later added sources can overwrite the work of previously added sources. If in the example above the `config.properties` file has the line `init.admin.name=bob` and the JVM's shell has `export init.admin.name=john init.admin.password=doe` and JVM has been launched with `-Dinit.admin.password=brown`, then the final values will be:
 
 - `init.admin.name=john` OS env is used after `config.props` file and overwrites file data
 - `init.admin.password=brown` JVM props are used after file and OS env and overwrites their settings
 
-#### 2.2.3 Sealing
+#### 2.4.3 Sealing
 
 Another feature of `app-config` is the ability to become immutable after all provided sources are polled and values are set in a proper enumeration members. The `AppConfig`'s method `initConfig()` seals itself at the end of its first initialization and throws alarming exception automatically if repetitive attempts to initialize are taken. But to disable `setValue()` method of enum members a little bit of coding must be done. To understand what must be done, take a look at `public static void seal() {}` in the interface `ICfgExtra`, then take a look how the method is overridden in interface implementation in `ypetrov.core.appcfg.testenums.Params01` in `src/test/java` and last - look how this method is called at the and of `AppConfig.initConfig()`. So, if we are interested in the value protection then the enum `MyAppConfig` above should look like this (the improvements are marked with `!!!`):
 
@@ -202,18 +215,6 @@ public enum MyAppCfg implements ICfgExtra {
 ```
 
 The sealing is optional feature. Don't need it - don't use it.
-
-### 2.3 Access config parameters in the application code
-
-Nothing is simpler. Just get value of the `myapp.config.MyAppCfg` enumeration member that you need:
-
-```java
-  ...
-  String vendorApiUrl = MyAppCfg.VENDOR_API_URL.value();
-  ...
-```
-
-That's it.
 
 ## 3 Dear contributors (if any appears)!
 
