@@ -219,4 +219,4 @@ The sealing is optional feature. Don't need it - don't use it.
 ## 3 Dear contributors (if any appears)!
 
 1. Please use Google Java format
-2. Please NO runtime dependencies AT ALL. Let's keep it puristic-minimalistic. If, for example, you need some special source of config values, let's say *sql select* it from remote RDBMS, then create new project, set `app-config` as its dependency and then add as many other dependencies as you need.
+2. Please NO runtime dependencies AT ALL. Let's keep it puristic-minimalistic. Assume, for example, you need some special source of config values, let's say `.yml` or `.xml` file flattened to key-value pairs using dot-notation. Then create new project, set `app-config` as its dependency and then add as many other dependencies as you need.
