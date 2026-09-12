@@ -137,7 +137,27 @@ Now a few comments.
 
 #### 2.4.1 Houston, we have a problem!
 
-After `AppConfig.initConfig()` completes its work it would be a good idea to check all members of config `enum` - what if some member has `null` in its `value`? It's quite possible if neither of used sources has value for some key. How to react on this is up to app designer - abort starting, disable functionality that relies on this config parameter, call 911, whatever else...
+There are possibilities that the app config data model and its use can bring some bad news. Two such possibilities - `null` value of some not defaultable config parameter and not unique keys - have some sort of protection in the `src/main/java` in the class `ypetrov.appcfg.utils.CfgChecker`.
+
+The `null` value of config enum member may happen when (a) member has `null` in the `defaultValue` parameter of its constructor - we rely on the sources and (b) neither of provided sources has has value for this parameter. The `CfgChecker`'s method `public List<T> checkNoValue(Class<T> enumClass)` returns the list of config enum objects whose `value`s is `null`. If the returned list is not empty then we have potential problem. Clearly, the config enum must be initialized by `AppConfig.initConfig(...)` method before check.
+
+The second problem - the same key is linked to more than one config enum member. The method `public Map<String, List<T>> checkUniqueKeys(Class<T> enumClass)` returns the map with not unique keys. The key of map entry is the `key` of config parameter and the value of the map entry is a `List` of enum members that have this `key`. The size of this list is greater than one. Like the `checkNoValue` above, if the returned map is not empty then we have the problem and this checker must be ran after `AppConfig.initConfig(...)`. 
+
+Those two checkers with inspection of their return can be used on prod code after config enum is initialized.
+
+Or they can be used in JUnit tests of your application. Like:
+```
+  ...
+  @Test
+  public void testCheckNoValueSuccess() throws Exception {
+    assertDoesNotThrow(() -> AppConfig.initConfig(Params02.class, sources2));
+    CfgChecker<Params02> checker = new CfgChecker<Params02>();
+    List<Params02> result = checker.checkNoValue(Params02.class);
+    assertTrue(result.size() == 0, "Not defaultable parameters are detected");
+  }
+  ...
+```
+But in this case the list of sources `sources2` must match prod sources.
 
 #### 2.4.2 Order matters
 
