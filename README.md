@@ -146,7 +146,7 @@ The second problem - the same key is linked to more than one config enum member.
 Those two checkers with inspection of their return can be used on prod code after config enum is initialized.
 
 Or they can be used in JUnit tests of your application. Like:
-```
+```java
   ...
   @Test
   public void testCheckNoValueSuccess() throws Exception {
