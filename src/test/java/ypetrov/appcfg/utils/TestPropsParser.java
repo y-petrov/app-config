@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Hashtable;
 import java.util.Properties;
 import org.junit.jupiter.api.Test;
-import ypetrov.core.appcfg.testenums.Params02;
+import ypetrov.appcfg.core.testenums.Params02;
 
 public class TestPropsParser {
 

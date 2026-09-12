@@ -1,4 +1,4 @@
-package ypetrov.core.appcfg.testenums;
+package ypetrov.appcfg.core.testenums;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

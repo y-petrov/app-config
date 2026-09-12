@@ -1,7 +1,9 @@
 package ypetrov.appcfg.core;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +19,7 @@ public class AppConfig<T extends Enum<T> & ICfgExtra> {
 
   private static final Logger logger = Logger.getLogger(AppConfig.class.getCanonicalName());
 
-  private static boolean sealed = false;
+  private static final Map<Class, Boolean> sealedConfigs = new HashMap<>();
 
   private static final Object lock = new Object();
 
@@ -33,6 +35,9 @@ public class AppConfig<T extends Enum<T> & ICfgExtra> {
    */
   public static <T extends Enum<T> & ICfgExtra> void initConfig(Class<T> paramsEnumClass,
       LinkedHashSet<ICfgSource<T>> sources) throws Exception {
+    boolean sealed = AppConfig.sealedConfigs.get(paramsEnumClass) != null
+        ? AppConfig.sealedConfigs.get(paramsEnumClass)
+        : false;
     if (!sealed) {
       if (paramsEnumClass == null) {
         logger.log(Level.SEVERE, "Attempt to initialize Config with 'null' as params Enum class");
@@ -48,16 +53,21 @@ public class AppConfig<T extends Enum<T> & ICfgExtra> {
         }
 
         // Disable 'initConfig()'
-        AppConfig.sealed = true;
+        AppConfig.sealedConfigs.put(paramsEnumClass, Boolean.TRUE);
 
-        // Disable value setter in all config enum members - works only if config enum is properly
-        // done. Have to use reflection as enum's static method can't be called from *generic T*
-        Method m = paramsEnumClass.getDeclaredMethod("seal");
-        m.invoke(paramsEnumClass);
+        try {
+          // Disable value setter in all config enum members - works only if config enum is properly
+          // done. Have to use reflection as enum's static method can't be called from *generic T*
+          Method m = paramsEnumClass.getDeclaredMethod("seal");
+          m.invoke(paramsEnumClass);
+        } catch (Exception e) {
+
+        }
       }
     } else {
-      String msg = String.format("The repetitive init attempt is taken. Provided params enum lass is [%s].",
-          paramsEnumClass != null ? paramsEnumClass.getCanonicalName() : "null");
+      String msg =
+          String.format("The repetitive init attempt is taken. Provided params enum class is [%s].",
+              paramsEnumClass != null ? paramsEnumClass.getCanonicalName() : "null");
       logger.log(Level.SEVERE, msg);
       throw new IllegalStateException(msg);
     }

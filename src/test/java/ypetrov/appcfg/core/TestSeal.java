@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junitpioneer.jupiter.SetEnvironmentVariable;
+import ypetrov.appcfg.core.testenums.Params01;
 import ypetrov.appcfg.sources.OsEnvSource;
-import ypetrov.core.appcfg.testenums.Params01;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestSeal {

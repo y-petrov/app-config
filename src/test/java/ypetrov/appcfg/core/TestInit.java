@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.SetEnvironmentVariable;
 import org.junitpioneer.jupiter.SetSystemProperty;
 import org.junitpioneer.jupiter.SetSystemProperty.SetSystemProperties;
+import ypetrov.appcfg.core.testenums.Params01;
+import ypetrov.appcfg.core.testenums.Params02;
 import ypetrov.appcfg.sources.JvmPropsSource;
 import ypetrov.appcfg.sources.OsEnvSource;
 import ypetrov.appcfg.sources.PropsFileSource;
-import ypetrov.core.appcfg.testenums.Params01;
-import ypetrov.core.appcfg.testenums.Params02;
 
 public class TestInit {
 
@@ -47,8 +47,11 @@ public class TestInit {
     assertTrue("jvmprops.false".equals(Params01.B.value()));
     assertTrue("osenv.5".equals(Params01.C.value()));
 
-    // Repetitive attempt
-    assertThrows(IllegalStateException.class, () -> AppConfig.initConfig(Params02.class, sources2));
-  }
+    // Init different config
+    assertDoesNotThrow(() -> AppConfig.initConfig(Params02.class, sources2));
+
+    // Repetitive for already iniy-ed
+    assertThrows(IllegalStateException.class, () -> AppConfig.initConfig(Params01.class, sources));
+}
 
 }

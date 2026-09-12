@@ -1,4 +1,4 @@
-package ypetrov.core.appcfg.testenums;
+package ypetrov.appcfg.core.testenums;
 
 import ypetrov.appcfg.core.ICfgExtra;
 

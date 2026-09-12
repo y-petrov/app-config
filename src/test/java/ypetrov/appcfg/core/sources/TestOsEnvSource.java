@@ -1,10 +1,10 @@
-package ypetrov.core.appcfg.sources;
+package ypetrov.appcfg.core.sources;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.SetEnvironmentVariable;
+import ypetrov.appcfg.core.testenums.Params01;
 import ypetrov.appcfg.sources.OsEnvSource;
-import ypetrov.core.appcfg.testenums.Params01;
 
 public class TestOsEnvSource {
 

@@ -1,11 +1,11 @@
-package ypetrov.core.appcfg.sources;
+package ypetrov.appcfg.core.sources;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.SetSystemProperty;
 import org.junitpioneer.jupiter.SetSystemProperty.SetSystemProperties;
+import ypetrov.appcfg.core.testenums.Params01;
 import ypetrov.appcfg.sources.JvmPropsSource;
-import ypetrov.core.appcfg.testenums.Params01;
 
 public class TestJvmPropsSource {
 
