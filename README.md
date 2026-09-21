@@ -109,19 +109,19 @@ import ypetrov.appcfg.sources.PropsFileSource;
 
 public class MyAppMain {
 
-    public static void main(String[] args) throws Exception {
+  public static void main(String[] args) throws Exception {
 
-        // App config init.
-        // 1. Build ordered collection of unique value sources
-        LinkedHashSet<ICfgSource<MyAppCfg>> sources = new LinkedHashSet<>();
-        sources.add(new PropsFileSource<MyAppCfg>("/home/ypetrov/config.properties"));
-        sources.add(new OsEnvSource<MyAppCfg>());
-        sources.add(new JvmPropsSource<MyAppCfg>());
-        // 2. Initialize config
-        AppConfig.initConfig(MyAppCfg.class, sources);
-        // That's it :)
+    // App config init.
+    // 1. Build ordered collection of unique value sources
+    LinkedHashSet<ICfgSource<MyAppCfg>> sources = new LinkedHashSet<>();
+    sources.add(new PropsFileSource<MyAppCfg>("/home/ypetrov/config.properties"));
+    sources.add(new OsEnvSource<MyAppCfg>());
+    sources.add(new JvmPropsSource<MyAppCfg>());
+    // 2. Initialize config
+    AppConfig.initConfig(MyAppCfg.class, sources, true); // The last arg -true- will be explained below
+    // That's it :)
 
-        // Other code code code...
+    // Other code code code...
     }
 }
 ```
@@ -132,7 +132,7 @@ Nothing is simpler. Just get value of the `myapp.config.MyAppCfg` enumeration me
 
 ```java
   ...
-String vendorApiUrl = MyAppCfg.VENDOR_API_URL.value();
+  String vendorApiUrl = MyAppCfg.VENDOR_API_URL.value();
   ...
 ```
 
@@ -166,16 +166,14 @@ The `checkNoValue` checker can be used in prod code after config enum is initial
 
 ```java
   ...
-        AppConfig.initConfig(MyConfigEnum .class, theSources);
+  AppConfig.initConfig(MyConfigEnum .class, theSources);
 
-CfgChecker<MyConfigEnum> checker = new CfgChecker<MyConfigEnum>();
-List<MyConfigEnum> noValResult = checker.checkNoValue(MyConfigEnum.class);
-    if(noValResult.
-
-size() >0){
-        // Take appropriate actions
-        }
-        ...
+  CfgChecker<MyConfigEnum> checker = new CfgChecker<MyConfigEnum>();
+  List<MyConfigEnum> noValResult = checker.checkNoValue(MyConfigEnum.class);
+  if(noValResult.size() >0) {
+    // Take appropriate actions
+  }
+  ...
 ```
 
 The use of `checkUniqueKeys` is supposed to be a part of JUnit tests of the application.
